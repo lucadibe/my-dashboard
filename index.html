@@ -5,7 +5,7 @@
     <title>Moneyline Dashboard - Live</title>
     <style>
         body { margin: 0; padding: 20px; background-color: #131722; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #e0e0e0; }
-        .data-section { max-width: 1300px; margin: 0 auto; background-color: #1e222d; border-radius: 12px; border: 1px solid #2a2e39; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .data-section { max-width: 1400px; margin: 0 auto; background-color: #1e222d; border-radius: 12px; border: 1px solid #2a2e39; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
         .header-panel { padding: 20px; border-bottom: 1px solid #2a2e39; background: #1e222d; display: flex; justify-content: space-between; align-items: center; }
         h2 { margin: 0; font-size: 20px; color: #d1d4dc; letter-spacing: 1px; }
         .table-container { overflow-x: auto; }
@@ -41,10 +41,10 @@
                         <th onclick="sortTable(0)">Ticker</th>
                         <th onclick="sortTable(1)">LAST PRICE</th>
                         <th onclick="sortTable(2)">Trend W</th>
-                        <th onclick="sortTable(3)">Day W</th>
+                        <th onclick="sortTable(3)">Price Since Flip W</th>
                         <th onclick="sortTable(4)">Var % W</th>
                         <th onclick="sortTable(5)">Trend D</th>
-                        <th onclick="sortTable(6)">Day D</th>
+                        <th onclick="sortTable(6)">Price Since Flip D</th>
                         <th onclick="sortTable(7)">Var % D</th>
                     </tr>
                     <tr class="filter-row">
@@ -97,13 +97,13 @@
                 const ticker = c[0] || "";
                 if (ticker.length < 2) return;
 
-                // MAPPATURA
+                // MAPPATURA AGGIORNATA
                 const lastPrice = c[14] || "-"; // Colonna O
                 const trendW    = c[4]  || "";  // Colonna E
-                const dayW      = c[6]  || "";  // Colonna G
+                const flipW     = c[6]  || "";  // Colonna G (Price Since Flip W)
                 const varW      = c[15] || "-"; // Colonna P
                 const trendD    = c[9]  || "";  // Colonna J
-                const dayD      = c[11] || "";  // Colonna L
+                const flipD     = c[11] || "";  // Colonna L (Price Since Flip D)
                 const varD      = c[16] || "-"; // Colonna Q
 
                 const tr = document.createElement('tr');
@@ -129,18 +129,17 @@
                     <td class="ticker-style">${ticker}</td>
                     <td style="font-weight: bold; color: #fff;">${lastPrice}</td>
                     <td>${formatSign(trendW)}</td>
-                    <td>${dayW}</td>
+                    <td>${flipW}</td>
                     <td>${formatVar(varW)}</td>
                     <td>${formatSign(trendD)}</td>
-                    <td>${dayD}</td>
+                    <td>${flipD}</td>
                     <td>${formatVar(varD)}</td>
                 `;
                 tbody.appendChild(tr);
             });
-        } catch (e) { console.error("Errore Aggiornamento:", e); }
+        } catch (e) { console.error("Errore Caricamento:", e); }
     }
 
-    // Funzione Filtro Globale
     window.filterTable = function(n) {
         let inputs = document.getElementsByClassName("filter-input");
         let table = document.getElementById("tableBody");
@@ -171,7 +170,6 @@
             let x = a.cells[n].innerText.toLowerCase().replace('%','').replace(',','.');
             let y = b.cells[n].innerText.toLowerCase().replace('%','').replace(',','.');
             
-            // Prova a ordinare numericamente se possibile
             let numX = parseFloat(x);
             let numY = parseFloat(y);
             
