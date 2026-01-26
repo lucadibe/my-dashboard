@@ -10,13 +10,13 @@
         h2 { margin: 0; font-size: 20px; color: #d1d4dc; letter-spacing: 1px; }
         .table-container { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
-        th { position: sticky; top: 0; background: #2a2e39; color: #b2b5be; padding: 15px 12px; cursor: pointer; border-bottom: 2px solid #363a45; font-weight: 600; text-transform: uppercase; font-size: 12px; }
+        th { position: sticky; top: 0; background: #2a2e39; color: #b2b5be; padding: 15px 12px; cursor: pointer; border-bottom: 2px solid #363a45; font-weight: 600; text-transform: uppercase; font-size: 11px; }
         td { padding: 12px 12px; border-bottom: 1px solid #2a2e39; white-space: nowrap; }
         tr:hover { background-color: #262b3a; }
         
         /* Filtri */
-        .filter-row th { background: #1e222d; padding: 8px 12px; }
-        .filter-input { width: 100%; background: #131722; border: 1px solid #444; color: #fff; font-size: 12px; padding: 6px; border-radius: 4px; border: 1px solid #3d4151; }
+        .filter-row th { background: #1e222d; padding: 8px 12px; cursor: default; }
+        .filter-input { width: 100%; background: #131722; border: 1px solid #3d4151; color: #fff; font-size: 11px; padding: 6px; border-radius: 4px; box-sizing: border-box; }
         
         /* Segnali Visivi */
         .buy-pill { color: #00ff00; font-weight: bold; background: rgba(0, 255, 0, 0.1); padding: 4px 8px; border-radius: 4px; }
@@ -31,7 +31,7 @@
     <div class="data-section">
         <div class="header-panel">
             <h2>Dashboard Moneyline</h2>
-            <div id="status" style="color: #4caf50; font-weight: bold;">● CONNESSIONE ATTIVA</div>
+            <div id="status" style="color: #4caf50; font-weight: bold;">● LIVE DATA ACTIVE</div>
         </div>
         
         <div class="table-container">
@@ -39,23 +39,23 @@
                 <thead>
                     <tr>
                         <th onclick="sortTable(0)">Ticker</th>
-                        <th>Prezzo attuale</th>
+                        <th onclick="sortTable(1)">LAST PRICE</th>
                         <th onclick="sortTable(2)">Trend W</th>
                         <th onclick="sortTable(3)">Day W</th>
-                        <th>Var % W</th>
+                        <th onclick="sortTable(4)">Var % W</th>
                         <th onclick="sortTable(5)">Trend D</th>
                         <th onclick="sortTable(6)">Day D</th>
-                        <th>Var % D</th>
+                        <th onclick="sortTable(7)">Var % D</th>
                     </tr>
                     <tr class="filter-row">
-                        <th><input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable(0)"></th>
-                        <th></th>
+                        <th><input type="text" class="filter-input" placeholder="🔍 Ticker" onkeyup="filterTable(0)"></th>
+                        <th><input type="text" class="filter-input" placeholder="Filtr..." onkeyup="filterTable(1)"></th>
                         <th><input type="text" class="filter-input" placeholder="Filtr..." onkeyup="filterTable(2)"></th>
                         <th><input type="text" class="filter-input" placeholder="Filtr..." onkeyup="filterTable(3)"></th>
-                        <th></th>
+                        <th><input type="text" class="filter-input" placeholder="Filtr..." onkeyup="filterTable(4)"></th>
                         <th><input type="text" class="filter-input" placeholder="Filtr..." onkeyup="filterTable(5)"></th>
                         <th><input type="text" class="filter-input" placeholder="Filtr..." onkeyup="filterTable(6)"></th>
-                        <th></th>
+                        <th><input type="text" class="filter-input" placeholder="Filtr..." onkeyup="filterTable(7)"></th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
@@ -97,13 +97,13 @@
                 const ticker = c[0] || "";
                 if (ticker.length < 2) return;
 
-                // --- MAPPATURA AGGIORNATA ---
+                // MAPPATURA
                 const lastPrice = c[14] || "-"; // Colonna O
                 const trendW    = c[4]  || "";  // Colonna E
                 const dayW      = c[6]  || "";  // Colonna G
                 const varW      = c[15] || "-"; // Colonna P
-                const trendD    = c[9]  || "";  // Colonna J (MODIFICATA)
-                const dayD      = c[11] || "";  // Colonna L (MODIFICATA)
+                const trendD    = c[9]  || "";  // Colonna J
+                const dayD      = c[11] || "";  // Colonna L
                 const varD      = c[16] || "-"; // Colonna Q
 
                 const tr = document.createElement('tr');
@@ -117,7 +117,9 @@
 
                 const formatVar = (val) => {
                     if (val === "-") return val;
-                    const num = parseFloat(val.replace(',', '.').replace('%', ''));
+                    const cleanVal = val.replace(',', '.').replace('%', '').trim();
+                    const num = parseFloat(cleanVal);
+                    if (isNaN(num)) return val;
                     if (num > 0) return `<span class="pos-var">${val}</span>`;
                     if (num < 0) return `<span class="neg-var">${val}</span>`;
                     return val;
@@ -135,16 +137,28 @@
                 `;
                 tbody.appendChild(tr);
             });
-        } catch (e) { console.error("Errore:", e); }
+        } catch (e) { console.error("Errore Aggiornamento:", e); }
     }
 
+    // Funzione Filtro Globale
     window.filterTable = function(n) {
-        let input = document.getElementsByClassName("filter-input")[n];
-        let filter = input.value.toUpperCase();
-        let rows = document.getElementById("tableBody").getElementsByTagName("tr");
+        let inputs = document.getElementsByClassName("filter-input");
+        let table = document.getElementById("tableBody");
+        let rows = table.getElementsByTagName("tr");
+
         for (let i = 0; i < rows.length; i++) {
-            let td = rows[i].getElementsByTagName("td")[n];
-            if (td) rows[i].style.display = td.innerText.toUpperCase().includes(filter) ? "" : "none";
+            let showRow = true;
+            for (let j = 0; j < inputs.length; j++) {
+                let filter = inputs[j].value.toUpperCase();
+                let td = rows[i].getElementsByTagName("td")[j];
+                if (td && filter) {
+                    if (!td.innerText.toUpperCase().includes(filter)) {
+                        showRow = false;
+                        break;
+                    }
+                }
+            }
+            rows[i].style.display = showRow ? "" : "none";
         }
     }
 
@@ -154,9 +168,17 @@
         let rows = Array.from(tbody.rows);
         sortOrder[n] = !sortOrder[n];
         rows.sort((a, b) => {
-            let x = a.cells[n].innerText.toLowerCase();
-            let y = b.cells[n].innerText.toLowerCase();
-            return sortOrder[n] ? x.localeCompare(y, undefined, {numeric: true}) : y.localeCompare(x, undefined, {numeric: true});
+            let x = a.cells[n].innerText.toLowerCase().replace('%','').replace(',','.');
+            let y = b.cells[n].innerText.toLowerCase().replace('%','').replace(',','.');
+            
+            // Prova a ordinare numericamente se possibile
+            let numX = parseFloat(x);
+            let numY = parseFloat(y);
+            
+            if (!isNaN(numX) && !isNaN(numY)) {
+                return sortOrder[n] ? numX - numY : numY - numX;
+            }
+            return sortOrder[n] ? x.localeCompare(y) : y.localeCompare(x);
         });
         rows.forEach(r => tbody.appendChild(r));
     }
