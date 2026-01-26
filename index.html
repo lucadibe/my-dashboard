@@ -48,7 +48,7 @@
                         <th>Var % D</th>
                     </tr>
                     <tr class="filter-row">
-                        <th><input type="text" class="filter-input" placeholder="🔍 Cerca..." onkeyup="filterTable(0)"></th>
+                        <th><input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable(0)"></th>
                         <th></th>
                         <th><input type="text" class="filter-input" placeholder="Filtr..." onkeyup="filterTable(2)"></th>
                         <th><input type="text" class="filter-input" placeholder="Filtr..." onkeyup="filterTable(3)"></th>
@@ -94,17 +94,16 @@
                 if (index === 0 || !line) return;
 
                 const c = parseCSVLine(line, sep);
-
                 const ticker = c[0] || "";
                 if (ticker.length < 2) return;
 
-                // MAPPATURA NUOVE COLONNE
+                // --- MAPPATURA AGGIORNATA ---
                 const lastPrice = c[14] || "-"; // Colonna O
-                const trendW    = c[4]  || "";
-                const dayW      = c[6]  || "";
+                const trendW    = c[4]  || "";  // Colonna E
+                const dayW      = c[6]  || "";  // Colonna G
                 const varW      = c[15] || "-"; // Colonna P
-                const trendD    = c[8]  || "";
-                const dayD      = c[10] || "";
+                const trendD    = c[9]  || "";  // Colonna J (MODIFICATA)
+                const dayD      = c[11] || "";  // Colonna L (MODIFICATA)
                 const varD      = c[16] || "-"; // Colonna Q
 
                 const tr = document.createElement('tr');
@@ -116,7 +115,6 @@
                     return val;
                 };
 
-                // Formattazione colore Variazioni %
                 const formatVar = (val) => {
                     if (val === "-") return val;
                     const num = parseFloat(val.replace(',', '.').replace('%', ''));
@@ -137,7 +135,7 @@
                 `;
                 tbody.appendChild(tr);
             });
-        } catch (e) { console.error("Errore Caricamento:", e); }
+        } catch (e) { console.error("Errore:", e); }
     }
 
     window.filterTable = function(n) {
