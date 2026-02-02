@@ -32,6 +32,7 @@
         .sell-pill { color: #ff4444; font-weight: bold; background: rgba(255, 68, 68, 0.1); padding: 4px 8px; border-radius: 4px; }
         .ticker-style { font-weight: bold; color: #2962ff; font-size: 15px; }
         .market-style { color: #8d92a3; font-style: italic; font-size: 13px; }
+        .sector-style { color: #b2b5be; font-size: 12px; }
         .pos-var { color: #00ff00; font-weight: 500; }
         .neg-var { color: #ff4444; font-weight: 500; }
 
@@ -68,18 +69,22 @@
                     <tr>
                         <th onclick="handleSort(0)">Ticker</th>
                         <th onclick="handleSort(1)">Markets</th> 
-                        <th onclick="handleSort(2)">Last Price</th>
-                        <th onclick="handleSort(3)">Trend W</th>
-                        <th onclick="handleSort(4)">Price Since Flip W</th>
-                        <th onclick="handleSort(5)">Var % W</th>
-                        <th onclick="handleSort(6)">Trend D</th>
-                        <th onclick="handleSort(7)">Price Since Flip D</th>
-                        <th onclick="handleSort(8)">Var % D</th>
-                        <th onclick="handleSort(9)">My Watchlist</th>
+                        <th onclick="handleSort(2)">Sector</th>
+                        <th onclick="handleSort(3)">Industry</th>
+                        <th onclick="handleSort(4)">Last Price</th>
+                        <th onclick="handleSort(5)">Trend W</th>
+                        <th onclick="handleSort(6)">Price Since Flip W</th>
+                        <th onclick="handleSort(7)">Var % W</th>
+                        <th onclick="handleSort(8)">Trend D</th>
+                        <th onclick="handleSort(9)">Price Since Flip D</th>
+                        <th onclick="handleSort(10)">Var % D</th>
+                        <th onclick="handleSort(11)">My Watchlist</th>
                     </tr>
                     <tr class="filter-row">
                         <th><input type="text" class="filter-input" placeholder="🔍 Ticker" onkeyup="filterTable()"></th>
                         <th><input type="text" class="filter-input" placeholder="Market..." onkeyup="filterTable()"></th> 
+                        <th><input type="text" class="filter-input" placeholder="Sector..." onkeyup="filterTable()"></th>
+                        <th><input type="text" class="filter-input" placeholder="Industry..." onkeyup="filterTable()"></th>
                         <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
                         <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
                         <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
@@ -147,14 +152,13 @@
         
         for (let row of rows) {
             if (row.style.display !== "none") {
-                let trendW = row.cells[3].innerText.toUpperCase();
-                let varWStr = row.cells[5].innerText.replace(',', '.').replace('%', '').trim();
+                // Gli indici sono cambiati: Trend W è ora cella 5, Var % W è cella 7
+                let trendW = row.cells[5].innerText.toUpperCase();
+                let varWStr = row.cells[7].innerText.replace(',', '.').replace('%', '').trim();
                 let varW = parseFloat(varWStr);
 
-                // Conteggio BUY/SELL totali
                 if (trendW.includes("BUY")) {
                     buyCount++;
-                    // Analisi specifica sui soli segnali BUY per le percentuali
                     if (!isNaN(varW)) {
                         if (varW > 0) buyGreen++;
                         else if (varW < 0) buyRed++;
@@ -165,7 +169,6 @@
             }
         }
         
-        // Calcolo percentuali basato solo sul totale dei BUY
         let greenPerc = buyCount > 0 ? Math.round((buyGreen / buyCount) * 100) : 0;
         let redPerc = buyCount > 0 ? Math.round((buyRed / buyCount) * 100) : 0;
 
@@ -190,7 +193,19 @@
                 const ticker = c[0] || "";
                 if (ticker.length < 2) return;
 
-                const market = c[1]||"", lastP = c[14]||"-", trendW = c[4]||"", flipW = c[6]||"", varW = c[15]||"-", trendD = c[9]||"", flipD = c[11]||"", varD = c[16]||"-";
+                // Nuova mappatura basata sul foglio dashb:
+                // Markets=c[1], Sector=c[17], Industry=c[18], Last Price=c[14], etc.
+                const market = c[1]||"", 
+                      sector = c[17]||"-", 
+                      industry = c[18]||"-", 
+                      lastP = c[14]||"-", 
+                      trendW = c[4]||"", 
+                      flipW = c[6]||"", 
+                      varW = c[15]||"-", 
+                      trendD = c[9]||"", 
+                      flipD = c[11]||"", 
+                      varD = c[16]||"-";
+
                 const isFav = favorites.includes(ticker);
                 
                 const formatSign = v => v.toUpperCase().includes('BUY') ? `<span class="buy-pill">${v}</span>` : v.toUpperCase().includes('SELL') ? `<span class="sell-pill">${v}</span>` : v;
@@ -202,10 +217,20 @@
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="ticker-style">${ticker}</td><td class="market-style">${market}</td><td style="font-weight:bold;color:#fff;">${lastP}</td>
-                    <td>${formatSign(trendW)}</td><td>${flipW}</td><td>${formatVar(varW)}</td>
-                    <td>${formatSign(trendD)}</td><td>${flipD}</td><td>${formatVar(varD)}</td>
-                    <td class="star-cell" data-val="${isFav?'YES':'NO'}"><span class="star-icon ${isFav?'active':''}" onclick="toggleFavorite('${ticker}',this)">★</span></td>
+                    <td class="ticker-style">${ticker}</td>
+                    <td class="market-style">${market}</td>
+                    <td class="sector-style">${sector}</td>
+                    <td class="sector-style">${industry}</td>
+                    <td style="font-weight:bold;color:#fff;">${lastP}</td>
+                    <td>${formatSign(trendW)}</td>
+                    <td>${flipW}</td>
+                    <td>${formatVar(varW)}</td>
+                    <td>${formatSign(trendD)}</td>
+                    <td>${flipD}</td>
+                    <td>${formatVar(varD)}</td>
+                    <td class="star-cell" data-val="${isFav?'YES':'NO'}">
+                        <span class="star-icon ${isFav?'active':''}" onclick="toggleFavorite('${ticker}',this)">★</span>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -222,7 +247,8 @@
         const rows = document.getElementById("tableBody").getElementsByTagName("tr");
         for (let row of rows) {
             let show = true;
-            if (watchlistOnly && row.cells[9].getAttribute('data-val') !== 'YES') show = false;
+            // Indice Watchlist aggiornato a 11
+            if (watchlistOnly && row.cells[11].getAttribute('data-val') !== 'YES') show = false;
             if (show) {
                 for (let j = 0; j < inputs.length; j++) {
                     let f = inputs[j].value.toUpperCase();
@@ -244,8 +270,9 @@
         const tbody = document.getElementById("tableBody");
         const rows = Array.from(tbody.rows);
         rows.sort((a, b) => {
-            let valA = (n===9) ? a.cells[n].getAttribute('data-val') : a.cells[n].innerText;
-            let valB = (n===9) ? b.cells[n].getAttribute('data-val') : b.cells[n].innerText;
+            // Indice Watchlist aggiornato a 11
+            let valA = (n===11) ? a.cells[n].getAttribute('data-val') : a.cells[n].innerText;
+            let valB = (n===11) ? b.cells[n].getAttribute('data-val') : b.cells[n].innerText;
             let x = valA.toLowerCase().replace('%','').replace(',','.'), y = valB.toLowerCase().replace('%','').replace(',','.');
             let numX = parseFloat(x), numY = parseFloat(y);
             let res = (!isNaN(numX) && !isNaN(numY)) ? numX - numY : x.localeCompare(y);
