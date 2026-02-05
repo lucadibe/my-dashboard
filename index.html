@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NILE - Segui il trend</title>
+    <title>NILE - Follow the trend</title>
     <script data-memberstack-app="app_cml9gnmyh02sc0stj77wr8xma" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
     
     <style>
@@ -39,7 +39,7 @@
         .star-icon { cursor: pointer; font-size: 18px; color: #3d4151; }
         .star-icon.active { color: #ffca28; }
 
-        /* Messaggio Area Protetta */
+        /* Locked Content Message */
         .locked-message { padding: 100px 20px; text-align: center; background: #1e222d; }
         .locked-message h3 { color: #2962ff; font-size: 28px; margin-bottom: 10px; }
         .locked-message p { color: #b2b5be; font-size: 16px; margin-bottom: 25px; }
@@ -51,9 +51,9 @@
         <div class="header-panel">
             <div style="flex: 1;">
                 <div class="logo-area">
-                    <h2>NILE - Segui il trend</h2>
-                    <a data-ms-content="!premium" href="#/ms/login" class="ms-auth-btn">Accedi</a>
-                    <a data-ms-content="premium" href="#/ms/logout" class="ms-auth-btn" style="background:#3d4151">Esci</a>
+                    <h2>NILE - Follow the trend</h2>
+                    <a data-ms-content="!premium" href="#/ms/login" class="ms-auth-btn">Log In</a>
+                    <a data-ms-content="premium" href="#/ms/logout" class="ms-auth-btn" style="background:#3d4151">Log Out</a>
                 </div>
                 
                 <div class="signal-stats" data-ms-content="premium">
@@ -67,7 +67,7 @@
             <div class="info-container">
                 <div id="status">● AUTO-UPDATE 4:00 AM</div>
                 <div data-ms-content="premium" style="margin-top:10px; font-size:12px; color:#8d92a3">
-                    Utente: <span data-ms-member="email">...</span>
+                    User: <span data-ms-member="email">...</span>
                 </div>
             </div>
         </div>
@@ -111,17 +111,16 @@
         </div>
 
         <div data-ms-content="!premium" class="locked-message">
-            <h3>Iscriviti a NILE</h3>
-            <p>Accedi ai segnali Trend Weekly e Daily in tempo reale.</p>
-            <a href="#/ms/signup" class="ms-auth-btn" style="padding: 15px 30px; font-size: 16px;">Crea Account Gratuito</a>
+            <h3>Subscribe to NILE</h3>
+            <p>Access Trend Weekly and Daily signals in real time.</p>
+            <a href="#/ms/signup" class="ms-auth-btn" style="padding: 15px 30px; font-size: 16px;">Create Free Account</a>
             <div style="margin-top: 20px; font-size: 13px; color: #666;">
-                Dopo la registrazione, l'accesso verrà abilitato manualmente entro 24h dal pagamento.
+                After registration, access will be manually enabled within 24h of payment.
             </div>
         </div>
     </div>
 
 <script>
-    // URL del tuo CSV Google Sheets
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQdzNpQjqwdqK5ZO16Kd8hlNNtmm31gxOy1AAb49CDXqxMwEOmUpowc9H4rHWPbb9rd874zmOtcDTUo/pub?gid=1410987574&single=true&output=csv';
 
     let favorites = JSON.parse(localStorage.getItem('myWatchlist')) || [];
@@ -261,7 +260,7 @@
     }
 
     update();
-    setInterval(update, 300000); // Aggiorna ogni 5 min se la pagina resta aperta
+    setInterval(update, 300000);
 </script>
 </body>
 </html>
