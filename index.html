@@ -8,10 +8,13 @@
     <style>
         body, html { margin: 0; padding: 0; min-height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #131722; color: #e0e0e0; }
         
-        /* --- 1. SCHERMATA LOGIN (Visibile di default, Memberstack la nasconderà se sei loggato) --- */
+        /* Nascondiamo tutto all'inizio per evitare confusione */
+        #login-screen, #dashboard-screen { display: none; }
+
+        /* SCHERMATA LOGIN */
         .login-screen {
             min-height: 100vh;
-            display: flex; /* FLEX VISIBILE DI DEFAULT */
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -28,68 +31,38 @@
             width: 90%;
         }
         .login-box h1 { color: #2962ff; margin-bottom: 10px; font-size: 32px; letter-spacing: 2px; }
-        .login-box p { color: #8d92a3; margin-bottom: 30px; }
-
-        /* --- 2. DASHBOARD (Visibile di default, Memberstack la nasconderà se NON sei loggato) --- */
-        .dashboard-screen {
-            display: block; /* BLOCCO VISIBILE DI DEFAULT */
-            padding: 20px;
-        }
-
-        .data-section { max-width: 1600px; margin: 0 auto; background-color: #1e222d; border-radius: 12px; border: 1px solid #2a2e39; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        
+        /* DASHBOARD */
+        .dashboard-screen { padding: 20px; }
+        .data-section { max-width: 1600px; margin: 0 auto; background-color: #1e222d; border-radius: 12px; border: 1px solid #2a2e39; overflow: hidden; }
         .header-panel { padding: 20px; border-bottom: 1px solid #2a2e39; background: #1e222d; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
         
-        .logo-area { display: flex; align-items: center; gap: 20px; }
-        h2 { margin: 0; font-size: 24px; color: #d1d4dc; letter-spacing: 1px; }
-        
-        .ms-btn { background: #2962ff; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.3s; border: none; cursor: pointer; display: inline-block; }
-        .ms-btn:hover { background: #1e4bd8; transform: translateY(-1px); }
+        .ms-btn { background: #2962ff; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; cursor: pointer; border: none; }
         .btn-outline { background: transparent; border: 1px solid #3d4151; color: #b2b5be; }
-        .btn-outline:hover { border-color: #b2b5be; color: #fff; background: transparent; }
 
-        .info-container { display: flex; flex-direction: column; align-items: flex-end; }
-        #status { color: #4caf50; font-weight: bold; font-size: 18px; letter-spacing: 0.5px; }
-        
         /* BANNER UPGRADE */
-        .upgrade-banner {
-            background: linear-gradient(90deg, #1e222d 0%, #293144 50%, #1e222d 100%);
-            border-bottom: 1px solid #2962ff;
-            color: #fff;
-            text-align: center;
-            padding: 15px;
-            font-size: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-        .upgrade-banner span { color: #2962ff; font-weight: bold; text-transform: uppercase; }
+        .upgrade-banner { background: #2962ff; color: #fff; text-align: center; padding: 10px; font-weight: bold; display: none; }
 
-        /* Statistiche e Tabelle */
+        /* TABELLA E STATISTICHE */
         .signal-stats { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
-        .stat-box { font-weight: bold; font-size: 13px; text-transform: uppercase; padding: 8px 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 8px; }
-        .buy-stat { color: #00ff00; background: rgba(0, 255, 0, 0.1); border-color: rgba(0, 255, 0, 0.2); }
-        .sell-stat { color: #ff4444; background: rgba(255, 68, 68, 0.1); border-color: rgba(255, 68, 68, 0.2); }
+        .stat-box { font-weight: bold; font-size: 13px; padding: 8px 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); }
+        .buy-stat { color: #00ff00; background: rgba(0, 255, 0, 0.1); }
+        .sell-stat { color: #ff4444; background: rgba(255, 68, 68, 0.1); }
 
         .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
-        th { position: sticky; top: 0; background: #2a2e39; color: #b2b5be; padding: 15px 12px; cursor: pointer; border-bottom: 2px solid #363a45; font-weight: 600; text-transform: uppercase; font-size: 11px; }
-        td { padding: 12px 12px; border-bottom: 1px solid #2a2e39; white-space: nowrap; }
-        tr:hover { background-color: #262b3a; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { background: #2a2e39; color: #b2b5be; padding: 15px 12px; text-align: left; font-size: 11px; }
+        td { padding: 12px 12px; border-bottom: 1px solid #2a2e39; }
+        .ticker-style { font-weight: bold; color: #2962ff; }
         
-        .filter-input { width: 100%; background: #131722; border: 1px solid #3d4151; color: #fff; font-size: 11px; padding: 6px; border-radius: 4px; box-sizing: border-box; }
-        .buy-pill { color: #00ff00; font-weight: bold; background: rgba(0, 255, 0, 0.1); padding: 4px 8px; border-radius: 4px; }
-        .sell-pill { color: #ff4444; font-weight: bold; background: rgba(255, 68, 68, 0.1); padding: 4px 8px; border-radius: 4px; }
-        .ticker-style { font-weight: bold; color: #2962ff; font-size: 15px; }
-        .pos-var { color: #00ff00; font-weight: 500; }
-        .neg-var { color: #ff4444; font-weight: 500; }
-        .star-icon { cursor: pointer; font-size: 18px; color: #3d4151; }
+        .filter-input { width: 100%; background: #131722; border: 1px solid #3d4151; color: #fff; padding: 6px; border-radius: 4px; }
+        .star-icon { cursor: pointer; color: #3d4151; font-size: 18px; }
         .star-icon.active { color: #ffca28; }
     </style>
 </head>
 <body>
 
-    <div class="login-screen" data-ms-content="!members"> 
+    <div id="login-screen" class="login-screen">
         <div class="login-box">
             <h1>NILE</h1>
             <p>Institutional Trend Follower System</p>
@@ -100,78 +73,43 @@
         </div>
     </div>
 
-    <div class="dashboard-screen" data-ms-content="members">
-        
-        <div id="premium-checker" data-ms-content="premium" style="display:none;"></div>
-
+    <div id="dashboard-screen" class="dashboard-screen">
         <div class="data-section">
-            
-            <div class="upgrade-banner" data-ms-content="!premium">
-                <div><span>Upgrade to Premium</span> to unlock full data & real-time signals.</div>
+            <div id="upgrade-banner" class="upgrade-banner">
+                PASS TO PREMIUM TO UNLOCK ALL DATA
             </div>
 
             <div class="header-panel">
                 <div style="flex: 1;">
-                    <div class="logo-area">
+                    <div style="display: flex; align-items: center; gap: 20px;">
                         <h2>NILE - Follow the trend</h2>
-                        <a href="#/ms/logout" class="ms-btn btn-outline" style="padding: 8px 15px; font-size: 12px;">Log Out</a>
+                        <button data-ms-action="logout" class="ms-btn btn-outline" style="padding: 8px 15px; font-size: 12px;">Log Out</button>
                     </div>
-                    
                     <div class="signal-stats">
-                        <div id="buyCounter" class="stat-box buy-stat">BUY SIGNAL TREND W: 0</div>
-                        <div id="sellCounter" class="stat-box sell-stat">SELL SIGNAL TREND W: 0</div>
-                        <div id="greenFlip" class="stat-box buy-stat">% GREEN SINCE FLIP W: 0%</div>
-                        <div id="redFlip" class="stat-box sell-stat">% RED SINCE FLIP W: 0%</div>
+                        <div id="buyCounter" class="stat-box buy-stat">BUY SIGNAL W: 0</div>
+                        <div id="sellCounter" class="stat-box sell-stat">SELL SIGNAL W: 0</div>
                     </div>
                 </div>
-                
-                <div class="info-container">
-                    <div id="status">● AUTO-UPDATE 4:00 AM</div>
-                    <div style="margin-top:10px; font-size:12px; color:#8d92a3">
-                        User: <span data-ms-member="email">...</span>
+                <div style="text-align: right;">
+                    <div style="color: #4caf50; font-weight: bold;">● AUTO-UPDATE ACTIVE</div>
+                    <div style="font-size: 12px; color: #8d92a3; margin-top: 5px;">
+                        User: <span data-ms-member="email">loading...</span>
                     </div>
                 </div>
             </div>
             
             <div class="table-container">
-                <table id="mainTable">
+                <table>
                     <thead>
                         <tr>
-                            <th onclick="handleSort(0)">Ticker</th>
-                            <th onclick="handleSort(1)">Markets</th> 
-                            <th onclick="handleSort(2)">Sector</th>
-                            <th onclick="handleSort(3)">Industry</th>
-                            <th onclick="handleSort(4)">Last Price</th>
-                            <th onclick="handleSort(5)">Trend W</th>
-                            <th onclick="handleSort(6)">Price Since Flip W</th>
-                            <th onclick="handleSort(7)">Var % W</th>
-                            <th onclick="handleSort(8)">Trend D</th>
-                            <th onclick="handleSort(9)">Price Since Flip D</th>
-                            <th onclick="handleSort(10)">Var % D</th>
-                            <th onclick="handleSort(11)">My Watchlist</th>
-                        </tr>
-                        <tr class="filter-row">
-                            <th><input type="text" class="filter-input" placeholder="🔍 Ticker" onkeyup="filterTable()"></th>
-                            <th><input type="text" class="filter-input" placeholder="Market..." onkeyup="filterTable()"></th> 
-                            <th><input type="text" class="filter-input" placeholder="Sector..." onkeyup="filterTable()"></th>
-                            <th><input type="text" class="filter-input" placeholder="Industry..." onkeyup="filterTable()"></th>
-                            <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
-                            <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
-                            <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
-                            <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
-                            <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
-                            <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
-                            <th><input type="text" class="filter-input" placeholder="Filter..." onkeyup="filterTable()"></th>
-                            <th style="text-align: center;">
-                                <span id="watchlistToggle" class="filter-star-toggle" onclick="toggleWatchlistFilter()" style="cursor:pointer;font-size:20px;">★</span>
-                            </th>
+                            <th>Ticker</th><th>Market</th><th>Sector</th><th>Industry</th><th>Last Price</th><th>Trend W</th>
+                            <th>Price Flip W</th><th>Var % W</th><th>Trend D</th><th>Price Flip D</th><th>Var % D</th><th>★</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
                 </table>
-                
-                <div id="limit-message" style="display:none; padding: 20px; text-align: center; color: #8d92a3; font-style: italic; border-top: 1px solid #2a2e39;">
-                    ... displaying only top 5 rows for Free Plan ...
+                <div id="limit-msg" style="display:none; padding: 20px; text-align: center; color: #8d92a3; border-top: 1px solid #2a2e39;">
+                    — Showing only 5 rows (Free Plan) —
                 </div>
             </div>
         </div>
@@ -180,172 +118,69 @@
 <script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQdzNpQjqwdqK5ZO16Kd8hlNNtmm31gxOy1AAb49CDXqxMwEOmUpowc9H4rHWPbb9rd874zmOtcDTUo/pub?gid=1410987574&single=true&output=csv';
 
-    let favorites = JSON.parse(localStorage.getItem('myWatchlist')) || [];
-    let watchlistOnly = false;
-    let currentSort = { column: null, ascending: true };
-
-    // --- FUNZIONE PER CONTROLLARE LO STATO PREMIUM ---
-    function checkPremiumStatus() {
-        const checker = document.querySelector('#premium-checker');
-        if (!checker) return false;
-        // Memberstack nasconde l'elemento con display:none se non hai accesso
-        return getComputedStyle(checker).display !== 'none';
-    }
-
-    function toggleWatchlistFilter() {
-        watchlistOnly = !watchlistOnly;
-        document.getElementById('watchlistToggle').classList.toggle('enabled', watchlistOnly);
-        filterTable();
-    }
-
-    function toggleFavorite(ticker, element) {
-        const index = favorites.indexOf(ticker);
-        if (index > -1) {
-            favorites.splice(index, 1);
-            element.classList.remove('active');
-            element.closest('td').setAttribute('data-val', 'NO');
-        } else {
-            favorites.push(ticker);
-            element.classList.add('active');
-            element.closest('td').setAttribute('data-val', 'YES');
-        }
-        localStorage.setItem('myWatchlist', JSON.stringify(favorites));
-        filterTable();
-    }
-
-    function parseCSVLine(line, sep) {
-        const result = [];
-        let cur = '', inQuotes = false;
-        for (let char of line) {
-            if (char === '"') inQuotes = !inQuotes;
-            else if (char === sep && !inQuotes) { result.push(cur.trim()); cur = ''; }
-            else cur += char;
-        }
-        result.push(cur.trim());
-        return result;
-    }
-
-    function updateCounters() {
-        let buyCount = 0; let sellCount = 0; let buyGreen = 0; let buyRed = 0;
-        const rows = document.getElementById("tableBody").getElementsByTagName("tr");
-        for (let row of rows) {
-            if (row.style.display !== "none") {
-                let trendW = row.cells[5].innerText.toUpperCase();
-                let varWStr = row.cells[7].innerText.replace(',', '.').replace('%', '').trim();
-                let varW = parseFloat(varWStr);
-                if (trendW.includes("BUY")) {
-                    buyCount++;
-                    if (!isNaN(varW)) { if (varW > 0) buyGreen++; else if (varW < 0) buyRed++; }
-                } else if (trendW.includes("SELL")) { sellCount++; }
-            }
-        }
-        let greenPerc = buyCount > 0 ? Math.round((buyGreen / buyCount) * 100) : 0;
-        let redPerc = buyCount > 0 ? Math.round((buyRed / buyCount) * 100) : 0;
-        document.getElementById("buyCounter").innerText = "BUY SIGNAL TREND W: " + buyCount;
-        document.getElementById("sellCounter").innerText = "SELL SIGNAL TREND W: " + sellCount;
-        document.getElementById("greenFlip").innerText = "% GREEN SINCE FLIP W: " + greenPerc + "%";
-        document.getElementById("redFlip").innerText = "% RED SINCE FLIP W: " + redPerc + "%";
-    }
-
-    async function update() {
+    // Funzione principale di caricamento dati
+    async function loadData(isPremium) {
         try {
-            await new Promise(r => setTimeout(r, 1000));
-            const isPremium = checkPremiumStatus(); 
-
             const res = await fetch(csvUrl + '&nocache=' + Date.now());
             const text = await res.text();
-            const sep = text.includes(';') ? ';' : ',';
-            const lines = text.split(/\r?\n/);
+            const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
 
-            let count = 0;
-            const maxRows = isPremium ? 99999 : 5;
+            const maxRows = isPremium ? 9999 : 5;
+            if (!isPremium) document.getElementById('limit-msg').style.display = 'block';
+            else document.getElementById('limit-msg').style.display = 'none';
 
-            lines.forEach((line, index) => {
-                if (index === 0 || !line) return;
-                
-                if (count >= maxRows) return; 
+            let buys = 0, sells = 0;
 
-                const c = parseCSVLine(line, sep);
-                const ticker = c[0] || "";
-                if (ticker.length < 2) return;
-                
-                const market=c[1]||"", sector=c[17]||"-", industry=c[18]||"-", lastP=c[14]||"-", trendW=c[4]||"", flipW=c[6]||"", varW=c[15]||"-", trendD=c[9]||"", flipD=c[11]||"", varD=c[16]||"-";
-                const isFav = favorites.includes(ticker);
-                const formatSign = v => v.toUpperCase().includes('BUY') ? `<span class="buy-pill">${v}</span>` : v.toUpperCase().includes('SELL') ? `<span class="sell-pill">${v}</span>` : v;
-                const formatVar = v => {
-                    if (v === "-") return v;
-                    const n = parseFloat(v.replace(',','.').replace('%',''));
-                    return isNaN(n) ? v : `<span class="${n>0?'pos-var':n<0?'neg-var':''}">${v}</span>`;
-                };
+            for (let i = 1; i < lines.length; i++) {
+                if (i > maxRows) break;
+                const c = lines[i].split(text.includes(';') ? ';' : ',');
+                if (c.length < 5) continue;
+
+                const trendW = c[4] || "";
+                if (trendW.toUpperCase().includes("BUY")) buys++;
+                if (trendW.toUpperCase().includes("SELL")) sells++;
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="ticker-style">${ticker}</td>
-                    <td style="color:#8d92a3; font-style:italic;">${market}</td>
-                    <td style="color:#b2b5be; font-size:12px;">${sector}</td>
-                    <td style="color:#b2b5be; font-size:12px;">${industry}</td>
-                    <td style="font-weight:bold;color:#fff;">${lastP}</td>
-                    <td>${formatSign(trendW)}</td>
-                    <td>${flipW}</td>
-                    <td>${formatVar(varW)}</td>
-                    <td>${formatSign(trendD)}</td>
-                    <td>${flipD}</td>
-                    <td>${formatVar(varD)}</td>
-                    <td style="text-align:center" data-val="${isFav?'YES':'NO'}">
-                        <span class="star-icon ${isFav?'active':''}" onclick="toggleFavorite('${ticker}',this)">★</span>
-                    </td>`;
+                    <td class="ticker-style">${c[0]}</td><td>${c[1]}</td><td>${c[17]}</td><td>${c[18]}</td>
+                    <td style="color:#fff">${c[14]}</td>
+                    <td>${trendW.includes("BUY") ? '<span style="color:#0f0">BUY</span>' : '<span style="color:#f44">SELL</span>'}</td>
+                    <td>${c[6]}</td><td>${c[15]}</td><td>${c[9]}</td><td>${c[11]}</td><td>${c[16]}</td><td>★</td>
+                `;
                 tbody.appendChild(tr);
-                count++;
-            });
+            }
+            document.getElementById('buyCounter').innerText = "BUY SIGNAL W: " + buys;
+            document.getElementById('sellCounter').innerText = "SELL SIGNAL W: " + sells;
+        } catch (e) { console.error("Errore CSV:", e); }
+    }
 
-            if (!isPremium) {
-                document.getElementById('limit-message').style.display = 'block';
+    // Gestione Accesso Memberstack
+    window.addEventListener('load', async () => {
+        const memberstack = window.$memberstackDom;
+        
+        // Aspetta che Memberstack sia pronto
+        setTimeout(async () => {
+            const { data: member } = await memberstack.getCurrentMember();
+
+            if (!member) {
+                // UTENTE NON LOGGATO -> Mostra Login
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('dashboard-screen').style.display = 'none';
             } else {
-                document.getElementById('limit-message').style.display = 'none';
+                // UTENTE LOGGATO -> Mostra Dashboard
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard-screen').style.display = 'block';
+                
+                // Controlla se ha il piano Premium
+                const isPremium = member.planConnections && member.planConnections.some(pc => pc.planId === "premium" || pc.planId.startsWith("pln_"));
+                
+                if (!isPremium) document.getElementById('upgrade-banner').style.display = 'block';
+                
+                loadData(isPremium);
             }
-
-            filterTable();
-            updateCounters();
-        } catch (e) { console.error(e); }
-    }
-
-    window.filterTable = function() {
-        const inputs = document.getElementsByClassName("filter-input");
-        const rows = document.getElementById("tableBody").getElementsByTagName("tr");
-        for (let row of rows) {
-            let show = true;
-            if (watchlistOnly && row.cells[11].getAttribute('data-val') !== 'YES') show = false;
-            if (show) {
-                for (let j = 0; j < inputs.length; j++) {
-                    let f = inputs[j].value.toUpperCase();
-                    if (f && !row.cells[j].innerText.toUpperCase().includes(f)) { show = false; break; }
-                }
-            }
-            row.style.display = show ? "" : "none";
-        }
-        updateCounters();
-    }
-
-    window.handleSort = function(n) {
-        if (currentSort.column === n) currentSort.ascending = !currentSort.ascending;
-        else { currentSort.column = n; currentSort.ascending = true; }
-        const tbody = document.getElementById("tableBody");
-        const rows = Array.from(tbody.rows);
-        rows.sort((a, b) => {
-            let valA = (n===11) ? a.cells[n].getAttribute('data-val') : a.cells[n].innerText;
-            let valB = (n===11) ? b.cells[n].getAttribute('data-val') : b.cells[n].innerText;
-            let x = valA.toLowerCase().replace('%','').replace(',','.'), y = valB.toLowerCase().replace('%','').replace(',','.');
-            let numX = parseFloat(x), numY = parseFloat(y);
-            let res = (!isNaN(numX) && !isNaN(numY)) ? numX - numY : x.localeCompare(y);
-            return currentSort.ascending ? res : -res;
-        });
-        rows.forEach(r => tbody.appendChild(r));
-    }
-
-    Memberstack.onReady.then(function(member) {
-        update();
-        setInterval(update, 300000);
+        }, 1000);
     });
 </script>
 </body>
