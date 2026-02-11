@@ -11,7 +11,6 @@
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #1e293b; padding-bottom: 20px; position: relative; }
         .header-left { display: flex; align-items: center; gap: 20px; }
         
-        /* TITOLO CENTRALE RICHIESTO */
         .brand-title {
             font-size: 1.8rem; font-weight: 900; color: #38bdf8; text-transform: uppercase;
             letter-spacing: 2px; position: absolute; left: 50%; transform: translateX(-50%);
@@ -21,7 +20,6 @@
         .update-time { color: #22c55e; font-weight: bold; display: block; margin-bottom: 5px; }
         button.logout-btn { background: transparent; border: 1px solid #334155; color: #94a3b8; padding: 5px 15px; border-radius: 6px; cursor: pointer; }
 
-        /* KPI AGGIORNATI (SOLO % COME RICHIESTO) */
         .stats-container { display: flex; gap: 15px; margin-bottom: 25px; }
         .stat-box { padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); }
         .bg-green { background: rgba(22, 163, 74, 0.2); color: #4ade80; }
@@ -31,8 +29,7 @@
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #334155; }
         
-        /* STILE PER FAR STARE I FILTRI SOTTO IL TITOLO */
-        th { background: #0f172a; color: #94a3b8; font-size: 0.75rem; letter-spacing: 1px; position: sticky; top: 0; }
+        th { background: #0f172a; color: #94a3b8; font-size: 0.75rem; letter-spacing: 1px; position: sticky; top: 0; cursor: pointer; }
         .th-content { display: flex; flex-direction: column; gap: 8px; }
         
         .filter-input {
@@ -43,8 +40,13 @@
         .badge-buy { background: rgba(74, 222, 128, 0.1); color: #4ade80; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
         .badge-sell { background: rgba(248, 113, 113, 0.1); color: #f87171; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
         .pos-var { color: #4ade80; } .neg-var { color: #f87171; }
-        .star-icon { cursor: pointer; font-size: 1.2rem; color: #475569; }
-        .star-icon.active { color: #fbbf24; }
+        
+        .star-icon { cursor: pointer; font-size: 1.2rem; color: #475569; transition: 0.2s; }
+        .star-icon.active { color: #fbbf24; text-shadow: 0 0 8px rgba(251, 191, 36, 0.4); }
+        
+        /* STILE PER LA STELLINA FILTRO NELL'HEADER */
+        .header-star { font-size: 1.3rem; cursor: pointer; color: #475569; margin-top: 5px; }
+        .header-star.active { color: #fbbf24; }
     </style>
 </head>
 <body>
@@ -72,15 +74,20 @@
         <table id="mainTable">
             <thead>
                 <tr>
-                    <th><div class="th-content">TICKER <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
-                    <th><div class="th-content">MARKET <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
-                    <th><div class="th-content">SECTOR <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
-                    <th><div class="th-content">INDUSTRY <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
-                    <th><div class="th-content">PRICE <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
-                    <th><div class="th-content">TREND W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
-                    <th><div class="th-content">FLIP W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
-                    <th><div class="th-content">VAR % W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
-                    <th style="text-align:center;">WATCHLIST</th>
+                    <th onclick="handleSort(0)"><div class="th-content">TICKER <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
+                    <th onclick="handleSort(1)"><div class="th-content">MARKET <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
+                    <th onclick="handleSort(2)"><div class="th-content">SECTOR <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
+                    <th onclick="handleSort(3)"><div class="th-content">INDUSTRY <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
+                    <th onclick="handleSort(4)"><div class="th-content">PRICE <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
+                    <th onclick="handleSort(5)"><div class="th-content">TREND W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
+                    <th onclick="handleSort(6)"><div class="th-content">FLIP W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
+                    <th onclick="handleSort(7)"><div class="th-content">VAR % W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()"></div></th>
+                    <th style="text-align:center;">
+                        <div class="th-content">
+                            WATCHLIST 
+                            <span id="masterStar" class="header-star" onclick="toggleWatchlistFilter(event)">★</span>
+                        </div>
+                    </th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -90,6 +97,8 @@
     <script>
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQdzNpQjqwdqK5ZO16Kd8hlNNtmm31gxOy1AAb49CDXqxMwEOmUpowc9H4rHWPbb9rd874zmOtcDTUo/pub?gid=1410987574&single=true&output=csv';
         let favorites = JSON.parse(localStorage.getItem('myWatchlist')) || [];
+        let watchlistOnly = false;
+        let sortDirection = {};
 
         async function update() {
             try {
@@ -107,7 +116,6 @@
 
                     const tr = document.createElement('tr');
                     const isFav = favorites.includes(c[0]);
-                    
                     const trendW = c[4] || "";
                     const varWStr = c[15] || "0%";
                     const varWNum = parseFloat(varWStr.replace(',','.').replace('%',''));
@@ -121,7 +129,9 @@
                         <td><span class="${trendW.includes('BUY')?'badge-buy':'badge-sell'}">${trendW}</span></td>
                         <td>${c[6]}</td>
                         <td class="${varWNum>0?'pos-var':varWNum<0?'neg-var':''}">${varWStr}</td>
-                        <td style="text-align:center;"><span class="star-icon ${isFav?'active':''}" onclick="toggleFavorite('${c[0]}',this)">★</span></td>
+                        <td style="text-align:center;" data-fav="${isFav?'1':'0'}">
+                            <span class="star-icon ${isFav?'active':''}" onclick="toggleFavorite('${c[0]}',this)">★</span>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -140,6 +150,15 @@
             if (i > -1) favorites.splice(i, 1); else favorites.push(t);
             localStorage.setItem('myWatchlist', JSON.stringify(favorites));
             el.classList.toggle('active');
+            el.parentElement.setAttribute('data-fav', favorites.includes(t) ? '1' : '0');
+            if (watchlistOnly) filterTable();
+        }
+
+        function toggleWatchlistFilter(event) {
+            event.stopPropagation(); // Evita il sort quando clicchi la stella
+            watchlistOnly = !watchlistOnly;
+            document.getElementById('masterStar').classList.toggle('active', watchlistOnly);
+            filterTable();
         }
 
         function filterTable() {
@@ -147,23 +166,52 @@
             const rows = document.getElementById("tableBody").rows;
             for (let row of rows) {
                 let show = true;
-                for (let i = 0; i < inputs.length; i++) {
-                    let f = inputs[i].value.toUpperCase();
-                    if (f && !row.cells[i].innerText.toUpperCase().includes(f)) { show = false; break; }
+                // Filtro Watchlist
+                if (watchlistOnly && row.cells[8].getAttribute('data-fav') !== '1') show = false;
+                // Filtri Testuali
+                if (show) {
+                    for (let i = 0; i < inputs.length; i++) {
+                        let f = inputs[i].value.toUpperCase();
+                        if (f && !row.cells[i].innerText.toUpperCase().includes(f)) { show = false; break; }
+                    }
                 }
                 row.style.display = show ? "" : "none";
             }
+            updateCounters();
+        }
+
+        function handleSort(n) {
+            const table = document.getElementById("mainTable");
+            const tbody = document.getElementById("tableBody");
+            let rows = Array.from(tbody.rows);
+            sortDirection[n] = !sortDirection[n];
+
+            rows.sort((a, b) => {
+                let x = a.cells[n].innerText.toUpperCase().replace('%','').replace(',','.');
+                let y = b.cells[n].innerText.toUpperCase().replace('%','').replace(',','.');
+                if (n === 8) { // Sort speciale per la colonna preferiti
+                    x = a.cells[n].getAttribute('data-fav');
+                    y = b.cells[n].getAttribute('data-fav');
+                }
+                if (!isNaN(parseFloat(x)) && !isNaN(parseFloat(y))) {
+                    return sortDirection[n] ? x - y : y - x;
+                }
+                return sortDirection[n] ? x.localeCompare(y) : y.localeCompare(x);
+            });
+            rows.forEach(row => tbody.appendChild(row));
         }
 
         function updateCounters() {
             let buyCount = 0, green = 0, red = 0;
             const rows = document.getElementById("tableBody").rows;
             for (let row of rows) {
-                const trend = row.cells[5].innerText;
-                const v = parseFloat(row.cells[7].innerText.replace(',','.'));
-                if (trend.includes("BUY")) {
-                    buyCount++;
-                    if (v > 0) green++; else if (v < 0) red++;
+                if (row.style.display !== "none") {
+                    const trend = row.cells[5].innerText;
+                    const v = parseFloat(row.cells[7].innerText.replace(',','.'));
+                    if (trend.includes("BUY")) {
+                        buyCount++;
+                        if (v > 0) green++; else if (v < 0) red++;
+                    }
                 }
             }
             document.getElementById("greenFlip").innerText = `% GREEN SINCE FLIP W: ${buyCount?Math.round(green/buyCount*100):0}%`;
