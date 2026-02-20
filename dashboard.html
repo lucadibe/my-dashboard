@@ -65,7 +65,6 @@
     </div>
 
 <style>
-    /* Aggiungi questo pezzetto di CSS per il nuovo pulsante */
     .bg-blue { background: rgba(56, 189, 248, 0.2); color: #38bdf8; cursor: pointer; border: 1px solid #38bdf8 !important; transition: 0.3s; }
     .bg-blue:hover { background: rgba(56, 189, 248, 0.4); transform: translateY(-2px); }
 </style>
@@ -80,20 +79,20 @@
         <table id="mainTable">
             <thead>
                 <tr>
-                    <th onclick="handleSort(0)"><div class="th-content">TICKER <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
-                    <th onclick="handleSort(1)"><div class="th-content">MARKET <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
-                    <th onclick="handleSort(2)"><div class="th-content">SECTOR <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
-                    <th onclick="handleSort(3)"><div class="th-content">INDUSTRY <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
-                    <th onclick="handleSort(4)"><div class="th-content">PRICE <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
-                    <th onclick="handleSort(5)"><div class="th-content">TREND W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
-                    <th onclick="handleSort(6)"><div class="th-content">FLIP W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
-                    <th onclick="handleSort(7)"><div class="th-content">VAR % W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
                     <th style="text-align:center;">
                         <div class="th-content">
                             WATCHLIST 
                             <span id="masterStar" class="header-star" onclick="toggleWatchlistFilter(event)">★</span>
                         </div>
                     </th>
+                    <th onclick="handleSort(1)"><div class="th-content">TICKER <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(2)"><div class="th-content">TREND W <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(3)"><div class="th-content">VAR % SINCE FLIP <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(4)"><div class="th-content">TIME SINCE FLIP <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(5)"><div class="th-content">PRICE <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(6)"><div class="th-content">MARKET <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(7)"><div class="th-content">SECTOR <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(8)"><div class="th-content">INDUSTRY <input type="text" class="filter-input" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -127,17 +126,17 @@
                     const varWNum = parseFloat(varWStr.replace(',','.').replace('%',''));
 
                     tr.innerHTML = `
-                        <td style="font-weight:bold; color:#38bdf8;">${c[0]}</td>
-                        <td>${c[1]}</td>
-                        <td>${c[17]}</td>
-                        <td>${c[18]}</td>
-                        <td>${c[14]}</td>
-                        <td><span class="${trendW.includes('BUY')?'badge-buy':'badge-sell'}">${trendW}</span></td>
-                        <td>${c[6]}</td>
-                        <td class="${varWNum>0?'pos-var':varWNum<0?'neg-var':''}">${varWStr}</td>
                         <td style="text-align:center;" data-fav="${isFav?'1':'0'}">
                             <span class="star-icon ${isFav?'active':''}" onclick="toggleFavorite('${c[0]}',this)">★</span>
                         </td>
+                        <td style="font-weight:bold; color:#38bdf8;">${c[0]}</td>
+                        <td><span class="${trendW.includes('BUY')?'badge-buy':'badge-sell'}">${trendW}</span></td>
+                        <td class="${varWNum>0?'pos-var':varWNum<0?'neg-var':''}">${varWStr}</td>
+                        <td>${c[6]}</td>
+                        <td>${c[14]}</td>
+                        <td>${c[1]}</td>
+                        <td>${c[17]}</td>
+                        <td>${c[18]}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -172,11 +171,11 @@
             const rows = document.getElementById("tableBody").rows;
             for (let row of rows) {
                 let show = true;
-                if (watchlistOnly && row.cells[8].getAttribute('data-fav') !== '1') show = false;
+                if (watchlistOnly && row.cells[0].getAttribute('data-fav') !== '1') show = false;
                 if (show) {
                     for (let i = 0; i < inputs.length; i++) {
                         let f = inputs[i].value.toUpperCase();
-                        if (f && !row.cells[i].innerText.toUpperCase().includes(f)) { show = false; break; }
+                        if (f && !row.cells[i+1].innerText.toUpperCase().includes(f)) { show = false; break; }
                     }
                 }
                 row.style.display = show ? "" : "none";
@@ -185,7 +184,6 @@
         }
 
         function handleSort(n) {
-            const table = document.getElementById("mainTable");
             const tbody = document.getElementById("tableBody");
             let rows = Array.from(tbody.rows);
             sortDirection[n] = !sortDirection[n];
@@ -193,10 +191,6 @@
             rows.sort((a, b) => {
                 let x = a.cells[n].innerText.toUpperCase().replace('%','').replace(',','.');
                 let y = b.cells[n].innerText.toUpperCase().replace('%','').replace(',','.');
-                if (n === 8) {
-                    x = a.cells[n].getAttribute('data-fav');
-                    y = b.cells[n].getAttribute('data-fav');
-                }
                 if (!isNaN(parseFloat(x)) && !isNaN(parseFloat(y))) {
                     return sortDirection[n] ? x - y : y - x;
                 }
@@ -210,8 +204,8 @@
             const rows = document.getElementById("tableBody").rows;
             for (let row of rows) {
                 if (row.style.display !== "none") {
-                    const trend = row.cells[5].innerText;
-                    const v = parseFloat(row.cells[7].innerText.replace(',','.'));
+                    const trend = row.cells[2].innerText;
+                    const v = parseFloat(row.cells[3].innerText.replace(',','.'));
                     if (trend.includes("BUY")) {
                         buyCount++;
                         if (v > 0) green++; else if (v < 0) red++;
@@ -230,4 +224,3 @@
     </script>
 </body>
 </html>
-
