@@ -187,10 +187,6 @@
                     const c = parseCSVLine(line, sep);
                     if (!c[0]) return;
 
-                    // FILTRO CATEGORIE DA ESCLUDERE
-                    const excluded = ['ASIA', 'CURRENCY RATES', 'EUROPE', 'USA', 'URANIUM'];
-                    if (excluded.includes(c[1].toUpperCase()) || excluded.includes(c[18].toUpperCase())) return;
-
                     const tr = document.createElement('tr');
                     const isFav = favorites.includes(c[0]);
                     const trendW = c[4] || "";
