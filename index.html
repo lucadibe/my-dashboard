@@ -97,62 +97,6 @@
         }
         .btn-nile:hover { transform: scale(1.05); background: #1d4ed8; }
 
-        /* SEZIONE PAGAMENTO OTTIMIZZATA */
-        .payment-container {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 15px;
-            border: 1px solid #334155;
-            max-width: 600px;
-        }
-
-        .payment-text {
-            font-size: 1rem;
-            color: #cbd5e1;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .payment-text strong { color: #38bdf8; }
-
-        .method-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .btn-method {
-            background: transparent;
-            border: 2px solid #38bdf8;
-            color: #38bdf8;
-            padding: 10px 30px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .btn-method:hover {
-            background: #38bdf8;
-            color: #0f172a;
-        }
-
-        #iban-display {
-            display: none;
-            margin-top: 15px;
-            padding: 10px;
-            background: rgba(56, 189, 248, 0.1);
-            border-radius: 5px;
-            font-family: monospace;
-            color: #38bdf8;
-            font-size: 1.1rem;
-            border: 1px dashed #38bdf8;
-        }
-
         .features-container { max-width: 1400px; margin: 0 auto; padding: 120px 20px; }
         .feature-row { display: flex; align-items: center; gap: 100px; margin-bottom: 200px; }
         .feature-row:nth-child(even) { flex-direction: row-reverse; }
@@ -207,20 +151,6 @@
         <div class="button-group">
             <a class="btn-nile" href="#" data-ms-modal="login">LOG IN</a>
             <a class="btn-nile" href="#" data-ms-modal="signup">SIGN UP</a>
-        </div>
-
-        <div class="payment-container">
-            <p class="payment-text">
-                To enable your login after registration, a subscription is required: <strong>€14.99/month</strong> or <strong>€119.00/year</strong>.<br>
-                <em>Write your account email address in the payment reference.</em>
-            </p>
-            
-            <div class="method-buttons">
-                <button class="btn-method" onclick="document.getElementById('iban-display').style.display='block'">IBAN</button>
-                <a href="qr code.jpg" target="_blank" class="btn-method">PayPal</a>
-            </div>
-
-            <div id="iban-display">IBAN: LT33 3250 0057 2804 7064</div>
         </div>
     </div>
 
