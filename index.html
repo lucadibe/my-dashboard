@@ -97,58 +97,59 @@
         }
         .btn-nile:hover { transform: scale(1.05); background: #1d4ed8; }
 
-        /* NUOVI STILI PER PAGAMENTO */
-        .payment-notice {
-            margin-top: 40px;
-            padding: 30px;
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid #38bdf8;
-            border-radius: 20px;
-            max-width: 800px;
+        /* NUOVI STILI COMPATTI PAGAMENTO */
+        .payment-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 15px;
+            border: 1px solid #334155;
+            max-width: 700px;
         }
 
-        .payment-notice p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+        .payment-text {
+            font-size: 1rem;
+            color: #cbd5e1;
             margin-bottom: 20px;
+            line-height: 1.5;
         }
 
-        .payment-methods-container {
+        .payment-text strong { color: #38bdf8; }
+
+        .method-buttons {
             display: flex;
-            align-items: center;
+            gap: 15px;
             justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
+            margin-bottom: 15px;
         }
 
-        .btn-iban {
+        .btn-method {
             background: transparent;
             border: 2px solid #38bdf8;
             color: #38bdf8;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
+            padding: 10px 30px;
+            border-radius: 8px;
             font-weight: bold;
+            cursor: pointer;
             transition: 0.3s;
+            text-transform: uppercase;
         }
 
-        .btn-iban:hover {
+        .btn-method:hover {
             background: #38bdf8;
             color: #0f172a;
         }
 
-        .paypal-qr-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+        #qr-display {
+            display: none;
+            margin-top: 15px;
         }
 
-        .paypal-qr-box img {
-            width: 120px;
-            height: 120px;
+        #qr-display img {
+            width: 150px;
+            height: 150px;
+            border: 3px solid white;
             border-radius: 10px;
-            border: 2px solid white;
         }
 
         .features-container { max-width: 1400px; margin: 0 auto; padding: 120px 20px; }
@@ -207,20 +208,34 @@
             <a class="btn-nile" href="#" data-ms-modal="signup">SIGN UP</a>
         </div>
 
-        <div class="payment-notice">
-            <p>To enable your login after registration, a subscription is required: <strong>€14.99/month</strong> or <strong>€119.00/year</strong>.<br>
-            <strong>MANDATORY:</strong> Include your registered account email address in the payment reference/reason (causale).</p>
+        <div class="payment-container">
+            <p class="payment-text">
+                To enable your login after registration, a subscription is required: <strong>€14.99/month</strong> or <strong>€119.00/year</strong>.<br>
+                <em>Write your account email address in the payment reference.</em>
+            </p>
             
-            <div class="payment-methods-container">
-                <button class="btn-iban" onclick="alert('IBAN: LT33 3250 0057 2804 7064')">Show Bank IBAN</button>
-                
-                <div class="paypal-qr-box">
-                    <span style="font-weight: bold; font-size: 0.9rem; color: #38bdf8;">PayPal QR Code:</span>
-                    <img src="qr code.jpg" alt="PayPal QR">
-                </div>
+            <div class="method-buttons">
+                <button class="btn-method" onclick="alert('Your IBAN: LT33 3250 0057 2804 7064')">IBAN</button>
+                <button class="btn-method" onclick="toggleQR()">PayPal</button>
+            </div>
+
+            <div id="qr-display">
+                <img src="qr code.jpg" alt="PayPal QR Code">
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 5px;">Scan to pay via PayPal</p>
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleQR() {
+            var x = document.getElementById("qr-display");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
+    </script>
 
     <div class="features-container">
         <div class="feature-row">
