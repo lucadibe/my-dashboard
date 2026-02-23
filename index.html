@@ -97,6 +97,60 @@
         }
         .btn-nile:hover { transform: scale(1.05); background: #1d4ed8; }
 
+        /* NUOVI STILI PER PAGAMENTO */
+        .payment-notice {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid #38bdf8;
+            border-radius: 20px;
+            max-width: 800px;
+        }
+
+        .payment-notice p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .payment-methods-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn-iban {
+            background: transparent;
+            border: 2px solid #38bdf8;
+            color: #38bdf8;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-iban:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .paypal-qr-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .paypal-qr-box img {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+
         .features-container { max-width: 1400px; margin: 0 auto; padding: 120px 20px; }
         .feature-row { display: flex; align-items: center; gap: 100px; margin-bottom: 200px; }
         .feature-row:nth-child(even) { flex-direction: row-reverse; }
@@ -151,6 +205,20 @@
         <div class="button-group">
             <a class="btn-nile" href="#" data-ms-modal="login">LOG IN</a>
             <a class="btn-nile" href="#" data-ms-modal="signup">SIGN UP</a>
+        </div>
+
+        <div class="payment-notice">
+            <p>To enable your login after registration, a subscription is required: <strong>€14.99/month</strong> or <strong>€119.00/year</strong>.<br>
+            <strong>MANDATORY:</strong> Include your registered account email address in the payment reference/reason (causale).</p>
+            
+            <div class="payment-methods-container">
+                <button class="btn-iban" onclick="alert('IBAN: LT33 3250 0057 2804 7064')">Show Bank IBAN</button>
+                
+                <div class="paypal-qr-box">
+                    <span style="font-weight: bold; font-size: 0.9rem; color: #38bdf8;">PayPal QR Code:</span>
+                    <img src="qr code.jpg" alt="PayPal QR">
+                </div>
+            </div>
         </div>
     </div>
 
