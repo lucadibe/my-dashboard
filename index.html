@@ -97,14 +97,14 @@
         }
         .btn-nile:hover { transform: scale(1.05); background: #1d4ed8; }
 
-        /* NUOVI STILI COMPATTI PAGAMENTO */
+        /* SEZIONE PAGAMENTO OTTIMIZZATA */
         .payment-container {
             margin-top: 30px;
             padding: 20px;
             background: rgba(30, 41, 59, 0.6);
             border-radius: 15px;
             border: 1px solid #334155;
-            max-width: 700px;
+            max-width: 600px;
         }
 
         .payment-text {
@@ -120,7 +120,6 @@
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-bottom: 15px;
         }
 
         .btn-method {
@@ -133,6 +132,8 @@
             cursor: pointer;
             transition: 0.3s;
             text-transform: uppercase;
+            text-decoration: none;
+            font-size: 0.9rem;
         }
 
         .btn-method:hover {
@@ -140,16 +141,16 @@
             color: #0f172a;
         }
 
-        #qr-display {
+        #iban-display {
             display: none;
             margin-top: 15px;
-        }
-
-        #qr-display img {
-            width: 150px;
-            height: 150px;
-            border: 3px solid white;
-            border-radius: 10px;
+            padding: 10px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 5px;
+            font-family: monospace;
+            color: #38bdf8;
+            font-size: 1.1rem;
+            border: 1px dashed #38bdf8;
         }
 
         .features-container { max-width: 1400px; margin: 0 auto; padding: 120px 20px; }
@@ -215,27 +216,13 @@
             </p>
             
             <div class="method-buttons">
-                <button class="btn-method" onclick="alert('Your IBAN: LT33 3250 0057 2804 7064')">IBAN</button>
-                <button class="btn-method" onclick="toggleQR()">PayPal</button>
+                <button class="btn-method" onclick="document.getElementById('iban-display').style.display='block'">IBAN</button>
+                <a href="qr code.jpg" target="_blank" class="btn-method">PayPal</a>
             </div>
 
-            <div id="qr-display">
-                <img src="qr code.jpg" alt="PayPal QR Code">
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 5px;">Scan to pay via PayPal</p>
-            </div>
+            <div id="iban-display">IBAN: LT33 3250 0057 2804 7064</div>
         </div>
     </div>
-
-    <script>
-        function toggleQR() {
-            var x = document.getElementById("qr-display");
-            if (x.style.display === "block") {
-                x.style.display = "none";
-            } else {
-                x.style.display = "block";
-            }
-        }
-    </script>
 
     <div class="features-container">
         <div class="feature-row">
