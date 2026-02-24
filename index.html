@@ -350,9 +350,92 @@
 
                 <div id="iban-bottom" class="iban-box">IBAN: LT33 3250 0057 2804 7064</div>
             </div>
-        </div>
-    </div>
+<style>
+    .partners-container {
+        display: flex;
+        gap: 15px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
 
+    .partner-card {
+        flex: 1;
+        min-width: 250px;
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .partner-card:hover {
+        transform: translateY(-3px);
+        border-color: #38bdf8;
+        box-shadow: 0 5px 15px rgba(56, 189, 248, 0.1);
+    }
+
+    .partner-logo {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: #0f172a;
+        padding: 5px;
+    }
+
+    .partner-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .partner-name {
+        font-weight: bold;
+        color: #e2e8f0;
+        font-size: 1.1rem;
+    }
+
+    .partner-desc {
+        font-size: 0.8rem;
+        color: #94a3b8;
+    }
+
+    /* Colori specifici per brand */
+    .card-bitget:hover { border-color: #00f0ff; }
+    .card-xtb:hover { border-color: #ff7d00; }
+
+    @media (max-width: 480px) {
+        .partner-card { min-width: 100%; }
+    }
+</style>
+
+<div class="partners-container">
+    <a href="https://www.bitget.com/express-register?registrationCode=EA3QK6UR" target="_blank" class="partner-card card-bitget">
+        <div class="partner-logo">
+            <svg viewBox="0 0 24 24" fill="#00f0ff" xmlns="http://www.w3.org/2000/svg"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5zm2 2h4v2H7V7zm6 0h4v10h-4V7zm-6 4h4v2H7v-2zm0 4h4v2H7v-2z"/></svg>
+        </div>
+        <div class="partner-info">
+            <span class="partner-name">Bitget</span>
+            <span class="partner-desc">Crypto Trading & Copy Trade</span>
+        </div>
+    </a>
+
+    <a href="https://www.xtb.com/it/apri-un-conto-reale" target="_blank" class="partner-card card-xtb">
+        <div class="partner-logo">
+            <svg viewBox="0 0 24 24" fill="#ff7d00" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8l7 3.5v7.4l-7 3.5-7-3.5V8.3l7-3.5zM11 8v3H8v2h3v3h2v-3h3v-2h-3V8h-2z"/></svg>
+        </div>
+        <div class="partner-info">
+            <span class="partner-name">XTB</span>
+            <span class="partner-desc">Stock, ETF & CFD Broker</span>
+        </div>
+    </a>
+</div>
     <footer class="footer-main">
         <div class="footer-links">
             <a href="contact.html">Contact</a>
