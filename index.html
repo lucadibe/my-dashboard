@@ -353,78 +353,61 @@
 <style>
     .partners-wrapper {
         display: flex;
-        gap: 12px;
-        margin: 20px 0;
+        gap: 10px;
+        margin: 15px 0;
         justify-content: center;
         flex-wrap: wrap;
     }
 
-    .partner-card-small {
+    .partner-card-mini {
         display: flex;
         align-items: center;
-        gap: 10px;
-        background: #1e293b;
+        gap: 8px;
+        background: rgba(30, 41, 59, 0.5); /* Più scuro e trasparente */
         border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 8px 16px;
+        border-radius: 6px;
+        padding: 6px 12px;
         text-decoration: none;
         transition: all 0.2s ease;
-        min-width: 220px;
+        min-width: 180px; /* Più stretto */
     }
 
-    .partner-card-small:hover {
-        transform: translateY(-2px);
-        background: #26334d;
+    .partner-card-mini:hover {
+        background: #1e293b;
         border-color: #38bdf8;
+        transform: translateY(-1px);
     }
 
-    .partner-logo-img {
-        width: 24px;
-        height: 24px;
+    .partner-logo-github {
+        width: 20px; /* Logo piccolo */
+        height: 20px;
         object-fit: contain;
     }
 
-    .partner-text-container {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .partner-main-text {
-        font-weight: 700;
+    .partner-label {
+        font-weight: 600;
         color: #e2e8f0;
-        font-size: 0.85rem;
+        font-size: 0.75rem; /* Testo più piccolo */
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .partner-sub-text {
-        font-size: 0.7rem;
-        color: #94a3b8;
+        white-space: nowrap;
     }
 
     @media (max-width: 480px) {
-        .partner-card-small { width: 100%; }
+        .partner-card-mini { width: 100%; justify-content: center; }
     }
 </style>
 
 <div class="partners-wrapper">
-    <a href="https://www.bitget.com/express-register?registrationCode=EA3QK6UR" target="_blank" class="partner-card-small">
-        <img src="https://img.bitgetimg.com/multi-lang/web/20230523/1684824555845.png" alt="Bitget Logo" class="partner-logo-img">
-        <div class="partner-text-container">
-            <span class="partner-main-text">REGISTER ON BITGET</span>
-            <span class="partner-sub-text">Crypto & Copy Trading</span>
-        </div>
+    <a href="https://www.bitget.com/register?registrationCode=EA3QK6UR" target="_blank" class="partner-card-mini">
+        <img src="bitget%20logo.png" alt="Bitget" class="partner-logo-github">
+        <span class="partner-label">REGISTER ON BITGET</span>
     </a>
 
-    <a href="https://www.interactivebrokers.com/mkt/?src=nile" target="_blank" class="partner-card-small">
-        <img src="https://www.interactivebrokers.com/images/common/apple-touch-icon-180x180.png" alt="IBKR Logo" class="partner-logo-img">
-        <div class="partner-text-container">
-            <span class="partner-main-text">REGISTER ON INTERACTIVE BROKERS</span>
-            <span class="partner-sub-text">Stocks, Options & Futures</span>
-        </div>
+    <a href="https://www.interactivebrokers.com/mkt/?src=nile" target="_blank" class="partner-card-mini">
+        <img src="xtb%20logo.png" alt="IBKR" class="partner-logo-github">
+        <span class="partner-label">REGISTER ON INTERACTIVE BROKERS</span>
     </a>
 </div>
- </div>
     </a>
 </div>
     <footer class="footer-main">
