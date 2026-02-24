@@ -10,7 +10,7 @@
     <script data-memberstack-app="app_cmlf9re4g00u40ss19rl32mj9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
     
     <style>
-        /* --- STILE ORIGINALE (NON MODIFICARE) --- */
+        /* --- STILE ORIGINALE PC (NON MODIFICATO) --- */
         body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #1e293b; padding-bottom: 20px; position: relative; }
         .header-left { display: flex; align-items: center; gap: 20px; }
@@ -36,7 +36,7 @@
         .bg-blue { background: rgba(56, 189, 248, 0.2); color: #38bdf8; cursor: pointer; border: 1px solid #38bdf8 !important; transition: 0.3s; }
         .bg-blue:hover { background: rgba(56, 189, 248, 0.4); transform: translateY(-2px); }
 
-        .table-container { overflow-x: auto; background: #1e293b; border-radius: 12px; border: 1px solid #334155; }
+        .table-container { overflow-x: auto; background: #1e293b; border-radius: 12px; border: 1px solid #334155; box-sizing: border-box; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #334155; }
         
@@ -81,25 +81,42 @@
             .stats-container { flex-direction: column; }
             .stat-box { justify-content: space-between; }
 
-            /* Trasformazione Tabella in Card per evitare lo scroll orizzontale */
-            #mainTable thead { display: none; } /* Nascondiamo l'header dei filtri su mobile per pulizia */
-            #mainTable, #mainTable tbody, #mainTable tr, #mainTable td { display: block; width: 100%; }
-            #mainTable tr { margin-bottom: 15px; border-bottom: 2px solid #38bdf8; padding-bottom: 10px; }
+            /* Nascondiamo l'header dei filtri su mobile per pulizia */
+            #mainTable thead { display: none; } 
+            
+            /* Trasformazione Tabella: Box-sizing risolve il problema dello sbordamento */
+            #mainTable, #mainTable tbody, #mainTable tr, #mainTable td { 
+                display: block; 
+                width: 100%; 
+                box-sizing: border-box; 
+            }
+            
+            #mainTable tr { 
+                margin-bottom: 15px; 
+                border-bottom: 2px solid #38bdf8; 
+                padding-bottom: 10px; 
+            }
+            
             #mainTable td { 
                 display: flex; 
                 justify-content: space-between; 
-                padding: 8px 15px; 
+                align-items: center; 
+                padding: 10px 15px; 
                 border: none; 
                 font-size: 0.85rem; 
                 text-align: right;
+                gap: 15px; /* Distanza minima tra etichetta a sinistra e dato a destra */
+                word-break: break-word; /* Evita che testi troppo lunghi spacchino la riga */
             }
+            
             #mainTable td::before {
                 content: attr(data-label);
                 font-weight: bold;
                 color: #94a3b8;
                 text-transform: uppercase;
-                font-size: 0.7rem;
+                font-size: 0.75rem;
                 text-align: left;
+                flex-shrink: 0; /* Impedisce all'etichetta di schiacciarsi */
             }
         }
     </style>
