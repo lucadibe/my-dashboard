@@ -140,7 +140,8 @@
             color: #0f172a;
         }
 
-        #iban-display {
+        /* Modifica qui: ho cambiato da #iban-display a .iban-box */
+        .iban-box {
             display: none;
             margin-top: 15px;
             padding: 10px;
@@ -232,11 +233,11 @@
             </p>
             
             <div class="method-buttons">
-                <button class="btn-method" onclick="document.getElementById('iban-display').style.display='block'">IBAN</button>
+                <button class="btn-method" onclick="document.getElementById('iban-top').style.display='block'">IBAN</button>
                 <a href="qr code.jpg" target="_blank" class="btn-method">PayPal</a>
             </div>
 
-            <div id="iban-display">IBAN: LT33 3250 0057 2804 7064</div>
+            <div id="iban-top" class="iban-box">IBAN: LT33 3250 0057 2804 7064</div>
         </div>
     </div>
 
@@ -273,26 +274,26 @@
             </div>
         </div>
 
-    <div class="bottom-cta">
-        <h2 style="color: #f8fafc; font-size: 2.5rem; margin-bottom: 40px;">Ready to follow the trend?</h2>
-        <div class="button-group">
-            <a class="btn-nile" href="#" data-ms-modal="login">LOG IN</a>
-            <a class="btn-nile" href="#" data-ms-modal="signup">SIGN UP</a>
-        </div>
-     <div class="center">
-            <p class="payment-text">
-                To enable your login after registration, a subscription is required: <strong>€14.99/month</strong> or <strong>€119.00/year</strong>.<br>
-                <em>Write your account email address in the payment reference.</em>
-            </p>
-         <div class="method-buttons">
-                <button class="btn-method" onclick="document.getElementById('iban-display').style.display='block'">IBAN</button>
-                <a href="qr code.jpg" target="_blank" class="btn-method">PayPal</a>
+        <div class="bottom-cta">
+            <h2 style="color: #f8fafc; font-size: 2.5rem; margin-bottom: 40px;">Ready to follow the trend?</h2>
+            <div class="button-group">
+                <a class="btn-nile" href="#" data-ms-modal="login">LOG IN</a>
+                <a class="btn-nile" href="#" data-ms-modal="signup">SIGN UP</a>
             </div>
+            <div>
+                <p class="payment-text">
+                    To enable your login after registration, a subscription is required: <strong>€14.99/month</strong> or <strong>€119.00/year</strong>.<br>
+                    <em>Write your account email address in the payment reference.</em>
+                </p>
+                <div class="method-buttons">
+                    <button class="btn-method" onclick="document.getElementById('iban-bottom').style.display='block'">IBAN</button>
+                    <a href="qr code.jpg" target="_blank" class="btn-method">PayPal</a>
+                </div>
 
-            <div id="iban-display">IBAN: LT33 3250 0057 2804 7064</div>
-              </div>
+                <div id="iban-bottom" class="iban-box">IBAN: LT33 3250 0057 2804 7064</div>
+            </div>
         </div>
-  </div>
+    </div>
 
     <footer class="footer-main">
         <div class="footer-links">
