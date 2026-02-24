@@ -177,13 +177,12 @@
             text-align: center;
         }
 
-        /* STILE FOOTER RIPRISTINATO */
         .footer-links {
             display: flex;
             justify-content: center;
             gap: 30px;
             margin-bottom: 30px;
-            flex-wrap: wrap; /* Permette di andare a capo su mobile */
+            flex-wrap: wrap;
         }
 
         .footer-links a {
@@ -191,7 +190,7 @@
             text-decoration: none;
             font-size: 0.95rem;
             transition: 0.3s;
-            padding: 5px; /* Aggiunto un piccolo padding per facilitare il tocco su mobile */
+            padding: 5px;
         }
 
         .footer-links a:hover { color: #38bdf8; }
@@ -235,9 +234,15 @@
             .method-buttons {
                 flex-direction: column;
                 gap: 10px;
+                /* Aggiunto: assicura che i bottoni stiano nel contenitore */
+                width: 100%; 
             }
             .btn-method {
                 width: 100%;
+                /* Aggiunto: include padding e bordo nella larghezza totale */
+                box-sizing: border-box; 
+                /* Opzionale: riduce leggermente il padding laterale su mobile */
+                padding: 10px 15px; 
             }
             .features-container {
                 padding: 60px 20px;
@@ -254,7 +259,6 @@
             .feature-text p {
                 font-size: 1.1rem;
             }
-            /* Aggiunto un piccolo gap extra per il footer su mobile */
             .footer-links {
                 gap: 20px;
             }
