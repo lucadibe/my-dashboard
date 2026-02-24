@@ -351,90 +351,79 @@
                 <div id="iban-bottom" class="iban-box">IBAN: LT33 3250 0057 2804 7064</div>
             </div>
 <style>
-    .partners-container {
+    .partners-wrapper {
         display: flex;
-        gap: 15px;
+        gap: 12px;
         margin: 20px 0;
+        justify-content: center;
         flex-wrap: wrap;
     }
 
-    .partner-card {
-        flex: 1;
-        min-width: 250px;
+    .partner-card-small {
+        display: flex;
+        align-items: center;
+        gap: 10px;
         background: #1e293b;
         border: 1px solid #334155;
-        border-radius: 12px;
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .partner-card:hover {
-        transform: translateY(-3px);
-        border-color: #38bdf8;
-        box-shadow: 0 5px 15px rgba(56, 189, 248, 0.1);
-    }
-
-    .partner-logo {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         border-radius: 8px;
-        background: #0f172a;
-        padding: 5px;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        min-width: 220px;
     }
 
-    .partner-info {
+    .partner-card-small:hover {
+        transform: translateY(-2px);
+        background: #26334d;
+        border-color: #38bdf8;
+    }
+
+    .partner-logo-img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+    }
+
+    .partner-text-container {
         display: flex;
         flex-direction: column;
     }
 
-    .partner-name {
-        font-weight: bold;
+    .partner-main-text {
+        font-weight: 700;
         color: #e2e8f0;
-        font-size: 1.1rem;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .partner-desc {
-        font-size: 0.8rem;
+    .partner-sub-text {
+        font-size: 0.7rem;
         color: #94a3b8;
     }
 
-    /* Colori specifici per brand */
-    .card-bitget:hover { border-color: #00f0ff; }
-    .card-xtb:hover { border-color: #ff7d00; }
-
     @media (max-width: 480px) {
-        .partner-card { min-width: 100%; }
+        .partner-card-small { width: 100%; }
     }
 </style>
 
-<div class="partners-container">
-    <a href="https://www.bitget.com/express-register?registrationCode=EA3QK6UR" target="_blank" class="partner-card card-bitget">
-        <div class="partner-logo">
-            <svg viewBox="0 0 24 24" fill="#00f0ff" xmlns="http://www.w3.org/2000/svg"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5zm2 2h4v2H7V7zm6 0h4v10h-4V7zm-6 4h4v2H7v-2zm0 4h4v2H7v-2z"/></svg>
-        </div>
-        <div class="partner-info">
-            <span class="partner-name">Bitget</span>
-            <span class="partner-desc">Crypto Trading & Copy Trade</span>
+<div class="partners-wrapper">
+    <a href="https://www.bitget.com/express-register?registrationCode=EA3QK6UR" target="_blank" class="partner-card-small">
+        <img src="https://img.bitgetimg.com/multi-lang/web/20230523/1684824555845.png" alt="Bitget Logo" class="partner-logo-img">
+        <div class="partner-text-container">
+            <span class="partner-main-text">REGISTER ON BITGET</span>
+            <span class="partner-sub-text">Crypto & Copy Trading</span>
         </div>
     </a>
 
-    <a href="https://www.xtb.com/it/apri-un-conto-reale" target="_blank" class="partner-card card-xtb">
-        <div class="partner-logo">
-            <svg viewBox="0 0 24 24" fill="#ff7d00" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8l7 3.5v7.4l-7 3.5-7-3.5V8.3l7-3.5zM11 8v3H8v2h3v3h2v-3h3v-2h-3V8h-2z"/></svg>
+    <a href="https://www.interactivebrokers.com/mkt/?src=nile" target="_blank" class="partner-card-small">
+        <img src="https://www.interactivebrokers.com/images/common/apple-touch-icon-180x180.png" alt="IBKR Logo" class="partner-logo-img">
+        <div class="partner-text-container">
+            <span class="partner-main-text">REGISTER ON INTERACTIVE BROKERS</span>
+            <span class="partner-sub-text">Stocks, Options & Futures</span>
         </div>
-        <div class="partner-info">
-            <span class="partner-name">XTB</span>
-            <span class="partner-desc">Stock, ETF & CFD Broker</span>
-        </div>
-     </div>
+    </a>
+</div>
  </div>
     </a>
 </div>
