@@ -338,7 +338,7 @@
                         <td data-label="TICKER" style="font-weight:bold; color:#38bdf8;">${c[0]}</td>
                         <td data-label="TREND W">
                             <span class="${trendW.includes('BUY')?'badge-buy':'badge-sell'}">${trendW}</span>
-                            <span class="chart-icon" onclick="openChart('${c[0]}')" title="View Trend Chart">📈</span>
+                            <span class="chart-icon" onclick="openChart('${c[0]}')" title="View Trend Chart">📊</span>
                         </td>
                         <td data-label="VAR %" class="${varWNum>0?'pos-var':varWNum<0?'neg-var':''}">${varWStr}</td>
                         <td data-label="TIME">${c[6]}</td>
@@ -434,3 +434,4 @@
     </script>
 </body>
 </html>
+
