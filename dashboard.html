@@ -33,8 +33,14 @@
         }
         .bg-green { background: rgba(22, 163, 74, 0.2); color: #4ade80; }
         .bg-red { background: rgba(220, 38, 38, 0.2); color: #f87171; }
-        .bg-blue { background: rgba(56, 189, 248, 0.2); color: #38bdf8; cursor: pointer; border: 1px solid #38bdf8 !important; transition: 0.3s; }
+        .bg-blue { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8 !important; transition: 0.3s; }
         .bg-blue:hover { background: rgba(56, 189, 248, 0.4); transform: translateY(-2px); }
+        .clickable { cursor: pointer; }
+
+        .balance-input {
+            background: rgba(15, 23, 42, 0.5); border: 1px solid #38bdf8; color: #38bdf8;
+            padding: 4px 8px; border-radius: 4px; width: 100px; font-weight: bold; outline: none;
+        }
 
         /* PULSANTE FILTRO MOBILE */
         .mobile-filter-trigger {
@@ -145,9 +151,16 @@
             <span id="redFlip">% RED SINCE FLIP W: 0%</span>
             <span class="info-btn" onclick="showExplanation(event, '% RED SINCE FLIP W', 'Percentage ratio of all assets with a \'BUY\' trend that have a negative % change.')">info</span>
         </div>
-        <div class="stat-box bg-blue" onclick="window.location.href='industry-stats.html'">
+        <div class="stat-box bg-blue clickable" onclick="window.location.href='industry-stats.html'">
             <span>STATISTICS - INDUSTRY</span>
             <span class="info-btn" onclick="showExplanation(event, 'STATISTICS - INDUSTRY', 'Used to monitor where investor capital is flowing.')">info</span>
+        </div>
+        <div class="stat-box bg-blue">
+            <span>INITIAL BALANCE:</span>
+            <input type="number" id="initialBalance" class="balance-input" placeholder="0" oninput="calculateBalance()">
+        </div>
+        <div class="stat-box bg-blue">
+            <span>BALANCE BACKTEST: <span id="balanceBacktestValue">0</span></span>
         </div>
     </div>
 
@@ -190,9 +203,15 @@
                             <input type="text" class="filter-input desktop-filter" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()">
                         </div>
                     </th>
-                    <th onclick="handleSort(6)"><div class="th-content">MARKET <input type="text" class="filter-input desktop-filter" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
-                    <th onclick="handleSort(7)"><div class="th-content">SECTOR <input type="text" class="filter-input desktop-filter" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
-                    <th onclick="handleSort(8)"><div class="th-content">INDUSTRY <input type="text" class="filter-input desktop-filter" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(6)">
+                        <div class="th-content">
+                            <div class="title-wrapper">BACKTEST 01/01/26-25/02/26 <span class="info-btn" onclick="showExplanation(event, 'BACKTEST', 'Result of the backtest for the specified period.')">info</span></div>
+                            <input type="text" class="filter-input desktop-filter" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()">
+                        </div>
+                    </th>
+                    <th onclick="handleSort(7)"><div class="th-content">MARKET <input type="text" class="filter-input desktop-filter" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(8)"><div class="th-content">SECTOR <input type="text" class="filter-input desktop-filter" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
+                    <th onclick="handleSort(9)"><div class="th-content">INDUSTRY <input type="text" class="filter-input desktop-filter" placeholder="🔍" onkeyup="filterTable()" onclick="event.stopPropagation()"></div></th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -246,16 +265,20 @@
                     <input type="text" class="filter-input mobile-filter" data-index="4" placeholder="Search Price..." onkeyup="syncMobileFilters()">
                 </div>
                 <div class="mobile-filter-item">
+                    <label>Backtest</label>
+                    <input type="text" class="filter-input mobile-filter" data-index="5" placeholder="Search Backtest..." onkeyup="syncMobileFilters()">
+                </div>
+                <div class="mobile-filter-item">
                     <label>Market</label>
-                    <input type="text" class="filter-input mobile-filter" data-index="5" placeholder="Search Market..." onkeyup="syncMobileFilters()">
+                    <input type="text" class="filter-input mobile-filter" data-index="6" placeholder="Search Market..." onkeyup="syncMobileFilters()">
                 </div>
                 <div class="mobile-filter-item">
                     <label>Sector</label>
-                    <input type="text" class="filter-input mobile-filter" data-index="6" placeholder="Search Sector..." onkeyup="syncMobileFilters()">
+                    <input type="text" class="filter-input mobile-filter" data-index="7" placeholder="Search Sector..." onkeyup="syncMobileFilters()">
                 </div>
                 <div class="mobile-filter-item">
                     <label>Industry</label>
-                    <input type="text" class="filter-input mobile-filter" data-index="7" placeholder="Search Industry..." onkeyup="syncMobileFilters()">
+                    <input type="text" class="filter-input mobile-filter" data-index="8" placeholder="Search Industry..." onkeyup="syncMobileFilters()">
                 </div>
             </div>
             <button class="close-btn" style="background:#38bdf8; border:none; padding:12px 0; width:100%; border-radius:5px; cursor:pointer; font-weight:bold;" onclick="toggleMobileFilters(false)">APPLY & CLOSE</button>
@@ -267,6 +290,7 @@
         let favorites = JSON.parse(localStorage.getItem('myWatchlist')) || [];
         let watchlistOnly = false;
         let sortDirection = {};
+        let totalBacktestSum = 0; // Somma globale delle percentuali backtest
 
         function toggleMobileFilters(show) {
             document.getElementById('mobileFilterModal').style.display = show ? 'flex' : 'none';
@@ -307,7 +331,6 @@
             document.getElementById('chartModal').style.display = 'none';
         }
 
-        /* --- MODIFICA INNERHTML INJECTION APPLICATA QUI --- */
         async function update() {
             try {
                 const res = await fetch(csvUrl + '&nocache=' + Date.now());
@@ -316,7 +339,8 @@
                 const lines = text.split(/\r?\n/);
                 const tbody = document.getElementById('tableBody');
                 
-                let htmlBuffer = ''; // Buffer per accumulare le righe
+                let htmlBuffer = '';
+                totalBacktestSum = 0; // Reset somma
 
                 lines.forEach((line, index) => {
                     if (index === 0 || !line) return;
@@ -327,8 +351,12 @@
                     const trendW = c[4] || "";
                     const varWStr = c[15] || "0%";
                     const varWNum = parseFloat(varWStr.replace(',','.').replace('%',''));
+                    
+                    // Colonna T (Backtest) -> Indice 19
+                    const backtestStr = c[19] || "0%";
+                    const backtestNum = parseFloat(backtestStr.replace(',','.').replace('%',''));
+                    totalBacktestSum += isNaN(backtestNum) ? 0 : backtestNum;
 
-                    // Costruiamo la stringa della riga
                     htmlBuffer += `
                         <tr>
                             <td data-label="WATCHLIST" style="text-align:center;" data-fav="${isFav?'1':'0'}">
@@ -342,15 +370,31 @@
                             <td data-label="VAR %" class="${varWNum>0?'pos-var':varWNum<0?'neg-var':''}">${varWStr}</td>
                             <td data-label="TIME">${c[6]}</td>
                             <td data-label="PRICE">${c[14]}</td>
+                            <td data-label="BACKTEST" class="${backtestNum>0?'pos-var':backtestNum<0?'neg-var':''}">${backtestStr}</td>
                             <td data-label="MARKET">${c[1]}</td>
                             <td data-label="SECTOR">${c[17]}</td>
                             <td data-label="INDUSTRY">${c[18]}</td>
                         </tr>`;
                 });
 
-                tbody.innerHTML = htmlBuffer; // Iniezione finale (singola operazione)
+                tbody.innerHTML = htmlBuffer;
                 updateCounters();
+                calculateBalance(); // Inizializza il calcolo bilancio
             } catch (e) { console.error(e); }
+        }
+
+        // Funzione calcolo automatico Bilancio
+        function calculateBalance() {
+            const initial = parseFloat(document.getElementById('initialBalance').value);
+            const display = document.getElementById('balanceBacktestValue');
+            
+            if (!isNaN(initial)) {
+                // Calcolo: Initial * Somma Percentuali (es: 1000 * 0.15 se somma è 15%)
+                const result = initial * (totalBacktestSum / 100);
+                display.innerText = result.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            } else {
+                display.innerText = "0";
+            }
         }
 
         function parseCSVLine(l, s) {
